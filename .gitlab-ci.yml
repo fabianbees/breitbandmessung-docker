@@ -1,6 +1,23 @@
+image: docker:latest
+
+stages:
+- build
+- release
+
 before_script:
   - docker info
+  - echo "$DOCKER_REGISTRY_PASS" | docker login $DOCKER_REGISTRY --username $DOCKER_REGISTRY_USER --password-stdin
 
-build_image:
+build:
+  stage: build
+  tags:
+    - amd64
   script:
-    - docker build -t breitbandmessung:2.0.0 - t breitbandmessung:latest .
+    - docker build -t fabianbees/breitbandmessung:2.0.0 -t fabianbees/breitbandmessung:latest .
+
+
+release-image:
+  stage: release
+  script:
+  - docker push fabianbees/breitbandmessung:2.0.0 
+  - docker push fabianbees/breitbandmessung:latest

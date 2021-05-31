@@ -13,11 +13,13 @@ build:
   tags:
     - amd64
   script:
-    - docker build -t fabianbees/breitbandmessung:2.0.0 -t fabianbees/breitbandmessung:latest .
+    - docker build -t fabianbees/breitbandmessung:2.0.1 -t fabianbees/breitbandmessung:latest .
 
 
 release-image:
   stage: release
+  tags:
+    - amd64
   script:
-  - docker push fabianbees/breitbandmessung:2.0.0 
+  - docker push fabianbees/breitbandmessung:2.0.1 
   - docker push fabianbees/breitbandmessung:latest

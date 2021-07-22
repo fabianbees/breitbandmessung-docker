@@ -1,25 +1,95 @@
-image: docker:latest
+variables:
+  CI_BUILD_IMAGE: "docker:latest"
+  CI_BUILD_AMD64: "enabled"
+  CI_BUILD_ARM64: ""
+  CI_BUILD_ARMv7: ""
+  # For using DOCKER_HUB as registry, set this Var to "true"
+  DOCKER_HUB: "true"
+  # Override CI_PROJECT_PATH for using correct DOCKERHUB path
+  CI_PROJECT_PATH: "fabianbees/breitbandmessung"
+  OPENVPNAS_VERSION: ""
+  VERSION: "2.0.3"
 
+# Build Stages
 stages:
 - build
 - release
 
-before_script:
-  - docker info
-  - echo "$DOCKER_REGISTRY_PASS" | docker login $DOCKER_REGISTRY --username $DOCKER_REGISTRY_USER --password-stdin
 
-build:
+# Pre-Script: Generate Tags, Login
+.build:
+  image: $CI_BUILD_IMAGE
   stage: build
+  before_script:
+    - export BUILD_DATE=$(date '+%Y-%m-%dT%H:%M:%S%:z')
+    - |
+      if [[ -z "$CI_COMMIT_TAG" ]]; then
+        export CI_APPLICATION_TAG="latest"
+      else
+        export CI_APPLICATION_TAG=${CI_APPLICATION_TAG:-$CI_COMMIT_TAG}
+      fi
+    - |
+      if [[ "$DOCKER_HUB" == "true" ]]; then
+        export CI_REGISTRY_IMAGE=$CI_PROJECT_PATH
+        echo "$DOCKER_REGISTRY_PASS" | docker login $DOCKER_REGISTRY --username $DOCKER_REGISTRY_USER --password-stdin
+      else
+        echo "$REGISTRY_PASS" | docker login $REGISTRY --username $REGISTRY_USER --password-stdin
+      fi
+
+
+# AMD64 Build
+build:amd64:
+  extends: .build
+  only:
+    variables:
+      - $CI_BUILD_AMD64
   tags:
     - amd64
   script:
-    - docker build --pull -t fabianbees/breitbandmessung:2.0.1 -t fabianbees/breitbandmessung:latest .
+    - docker build --pull --build-arg VERSION -t "$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-amd64" -t "$CI_REGISTRY_IMAGE:$VERSION-amd64" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-amd64"
+    - docker push "$CI_REGISTRY_IMAGE:$VERSION-amd64"
 
 
-release-image:
+# ARM64 Build
+build:arm64:
+  extends: .build
+  only:
+    variables:
+      - $CI_BUILD_ARM64
+  tags:
+    - arm64
+  script:
+    - docker build --pull --build-arg VERSION -t "$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-arm64" -t "$CI_REGISTRY_IMAGE:$VERSION-arm64" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-arm64"
+    - docker push "$CI_REGISTRY_IMAGE:$VERSION-arm64"
+
+
+# ARMv7 Build
+build:armv7:
+  extends: .build
+  only:
+    variables:
+      - $CI_BUILD_ARMv7
+  tags:
+    - armv7
+  script:
+    - docker build --pull --build-arg VERSION -t "$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-armv7" -t "$CI_REGISTRY_IMAGE:$VERSION-armv7" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-armv7"
+    - docker push "$CI_REGISTRY_IMAGE:$VERSION-armv7"
+
+
+
+# Building & Pushing Manifest
+build:manifest:
+  extends: .build
   stage: release
-  tags:
-    - amd64
   script:
-  - docker push fabianbees/breitbandmessung:2.0.1 
-  - docker push fabianbees/breitbandmessung:latest
+    - echo "Checking amd86 build..." && [[ $CI_BUILD_AMD64 ]] && echo "found" && export CI_MANIFEST_LIST="$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-amd64" && export CI_MANIFEST_LIST_VERSION="$CI_REGISTRY_IMAGE:$VERSION-amd64"
+    - echo "Checking arm64 build..." && [[ $CI_BUILD_ARM64 ]] && echo "found" && export CI_MANIFEST_LIST="$CI_MANIFEST_LIST $CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-arm64" && echo "found" && export CI_MANIFEST_LIST_VERSION="$CI_MANIFEST_LIST_VERSION $CI_REGISTRY_IMAGE:$VERSION-arm64"
+    - echo "Checking arm build..." && [[ $CI_BUILD_ARMv7 ]] && echo "found" && export CI_MANIFEST_LIST="$CI_MANIFEST_LIST $CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-armv7" && export CI_MANIFEST_LIST_VERSION="$CI_MANIFEST_LIST_VERSION $CI_REGISTRY_IMAGE:$VERSION-armv7"
+    - export DOCKER_CLI_EXPERIMENTAL=enabled
+    - echo $CI_MANIFEST_LIST
+    - echo $CI_MANIFEST_LIST_VERSION
+    - docker manifest create $CI_REGISTRY_IMAGE:$VERSION $CI_MANIFEST_LIST_VERSION && docker manifest push $CI_REGISTRY_IMAGE:$VERSION
+    - docker manifest create $CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG $CI_MANIFEST_LIST && docker manifest push $CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG

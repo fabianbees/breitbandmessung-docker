@@ -8,7 +8,7 @@ variables:
   # Override CI_PROJECT_PATH for using correct DOCKERHUB path
   CI_PROJECT_PATH: "fabianbees/breitbandmessung"
   OPENVPNAS_VERSION: ""
-  VERSION: "2.0.3"
+  VERSION: "2.0.4"
 
 # Build Stages
 stages:

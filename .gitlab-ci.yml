@@ -4,11 +4,10 @@ variables:
   CI_BUILD_ARM64: ""
   CI_BUILD_ARMv7: ""
   # For using DOCKER_HUB as registry, set this Var to "true"
-  DOCKER_HUB: "true"
+  DOCKER_HUB: "false"
   # Override CI_PROJECT_PATH for using correct DOCKERHUB path
-  CI_PROJECT_PATH: "fabianbees/breitbandmessung"
-  OPENVPNAS_VERSION: ""
-  VERSION: "3.2.0"
+  # CI_PROJECT_PATH: "fabianbees/breitbandmessung"
+  VERSION: "3.2.1"
 
 # Build Stages
 stages:

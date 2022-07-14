@@ -2,7 +2,6 @@
 
 # this script is invoced every 6 minutes if clipboard is set to 'RUN', then a speedtest runs
 
-DISPLAY=":0"
 
 while true
 do

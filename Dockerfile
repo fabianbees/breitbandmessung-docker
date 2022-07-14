@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive    # export DEBIAN_FRONTEND="noninteractive"
 ENV LANG=de_DE.UTF-8
 
 # Install xterm.
-RUN apt update && apt install -y htop libatk1.0 libatk-bridge2.0 libgtk-3-0 libgbm-dev libxss1 libasound2 wget xterm libnss3 locales && wget https://download.breitbandmessung.de/bbm/Breitbandmessung-linux.deb && dpkg -i Breitbandmessung-linux.deb && locale-gen de_DE.UTF-8
+RUN apt update && apt install -y apt-utils nano htop libatk1.0 libatk-bridge2.0 libgtk-3-0 libgbm-dev libxss1 libasound2 wget xterm libnss3 locales xdotool xclip xvfb && wget https://download.breitbandmessung.de/bbm/Breitbandmessung-linux.deb && dpkg -i Breitbandmessung-linux.deb && locale-gen de_DE.UTF-8
 
 # Generate and install favicons.
 # alternative logo: https://breitbandmessung.de/images/breitbandmessung-logo.png
@@ -19,6 +19,8 @@ RUN \
 
 # Copy the start script.
 COPY startapp.sh /startapp.sh
+COPY run-speedtest.sh /etc/services.d/speedtest/run
+
 
 # Set the name of the application.
 ENV APP_NAME="Breitbandmessung"

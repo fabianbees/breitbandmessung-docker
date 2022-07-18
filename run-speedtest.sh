@@ -6,13 +6,15 @@
 while true
 do
 
-    # wait 15 seconds then try again
-    sleep 15
+    # wait 65 seconds then try again
+    sleep 65
 
     # if clipboard is set to 'RUN'
     clipboard="$(DISPLAY=:0 xclip -o)"
     #if [ "$clipboard" == "RUN" ] || [ -f "/RUN" ]
-    if [ -f "/RUN" ]
+
+    # check if /RUN File exists, and time is past 7:30
+    if [[ -f "/RUN" ]] && [[ $(date +%H:%M) > "07:30" ]]
     then
         echo "Tring to start speedtest..."
         
@@ -42,8 +44,8 @@ do
 
 
         # wait 5:05 minutes
-        sleep 305
-        echo "waiting 6 minutes..."
+        sleep 260
+        echo "waiting 5 minutes..."
 
     else
         echo "RUN not set in clipboard or file /RUN not available. (value in clipboard is $clipboard)"

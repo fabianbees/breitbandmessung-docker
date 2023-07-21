@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  breitband-desktop:
+    image: breitband:latest
+    build: .
+    container_name: breitband-desktop
+    environment:
+      - TZ=Europe/Berlin
+    volumes:
+      - $PWD/breitbandmessung/data:/config/xdg/config/Breitbandmessung
+    ports:
+      - 5800:5800
+    restart: unless-stopped

@@ -2,7 +2,43 @@
 
 
 
-## Building the Container
+## Deploy via docker-compose (recommended)
+
+Deploy container via docker-compose v3 schema:
+
+```bash
+git clone https://gitlab.fabianbees.de/fabianbees/breitbandmessung-docker.git
+
+cd breitbandmessung-docker
+
+docker compose up
+```
+
+The container gets build automatically.
+
+
+```yaml
+---
+version: "3.8"
+services:
+  breitband-desktop:
+    image: breitband:latest
+    build: .
+    container_name: breitband-desktop
+    environment:
+      - TZ=Europe/Berlin
+    volumes:
+      - $PWD/breitbandmessung/data:/config/xdg/config/Breitbandmessung
+    ports:
+      - 5800:5800
+    restart: unless-stopped
+```
+
+
+
+## Deploy via docker run
+
+### Building the Container
 
 First you have to build the docker container localy, due to licencing I will not provide a prebuild image of the app.
 
@@ -16,15 +52,21 @@ cd breitbandmessung-docker
 docker build -t breitband:latest .
 ```
 
-## Run the Container
+### Run the Container
 
-Then the container can be run:
+Then the container can be run via docker:
 
 ```bash
-docker run -d -v $PWD/breitbandmessung/data:/config/xdg/config/Breitbandmessung -p 5800:5800 --name breitband-desktop breitband:latest
+docker run -d \
+    --name breitband-desktop \
+    -e TZ=Europe/Berlin \
+    -v $PWD/breitbandmessung/data:/config/xdg/config/Breitbandmessung \
+    -p 5800:5800 \
+    breitband:latest
 ```
 
 Appdata for the Breitbandmessung Desktop App lives in the following directory (inside the container): ```/config/xdg/config/Breitbandmessung```. Therefore this directory can be mounted to a host directory.
+
 
 
 ## Automated Speedtesting

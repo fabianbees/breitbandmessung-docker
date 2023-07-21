@@ -7,7 +7,7 @@
 Deploy container via docker-compose v3 schema:
 
 ```bash
-git clone https://gitlab.fabianbees.de/fabianbees/breitbandmessung-docker.git
+git clone https://github.com/fabianbees/breitbandmessung-docker.git
 
 cd breitbandmessung-docker
 
@@ -45,7 +45,7 @@ First you have to build the docker container localy, due to licencing I will not
 You can do this with the following commands:
 
 ```bash
-git clone https://gitlab.fabianbees.de/fabianbees/breitbandmessung-docker.git
+git clone https://github.com/fabianbees/breitbandmessung-docker.git
 
 cd breitbandmessung-docker
 

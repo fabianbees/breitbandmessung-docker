@@ -18,7 +18,6 @@ The container gets build automatically.
 
 
 ```yaml
----
 version: "3.8"
 services:
   breitband-desktop:

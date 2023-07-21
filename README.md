@@ -34,6 +34,11 @@ services:
 ```
 
 
+## Deploy as Portainer Stack
+
+![Screenshot1](images/portainer-stack.png)
+
+
 
 ## Deploy via docker run
 

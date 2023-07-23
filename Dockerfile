@@ -1,5 +1,5 @@
 # Pull base image.
-FROM jlesage/baseimage-gui:ubuntu-18.04
+FROM jlesage/baseimage-gui:ubuntu-20.04
 
 ARG VERSION
 
@@ -7,7 +7,11 @@ ENV DEBIAN_FRONTEND noninteractive    # export DEBIAN_FRONTEND="noninteractive"
 ENV LANG=de_DE.UTF-8
 
 # Install xterm.
-RUN apt update && apt install -y apt-utils nano htop libatk1.0 libatk-bridge2.0 libgtk-3-0 libgbm-dev libxss1 libasound2 wget xterm libnss3 locales xdotool xclip && wget https://download.breitbandmessung.de/bbm/Breitbandmessung-linux.deb && dpkg -i Breitbandmessung-linux.deb && locale-gen de_DE.UTF-8
+RUN apt update && apt upgrade -yy && \
+  apt install -y apt-utils nano htop libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 libgbm-dev libxss1 libasound2 wget xterm libnss3 locales xdotool xclip && \
+  wget https://download.breitbandmessung.de/bbm/Breitbandmessung-linux.deb && dpkg -i Breitbandmessung-linux.deb && \
+  locale-gen de_DE.UTF-8 && \
+  rm -rf /var/cache/apt /var/lib/apt/lists
 
 # Generate and install favicons.
 # alternative logo: https://breitbandmessung.de/images/breitbandmessung-logo.png

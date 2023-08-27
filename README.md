@@ -12,7 +12,23 @@ Setup the container in these five steps:
 
 
 
-## Deploy via docker-compose (recommended)
+## Deploy via docker run
+
+The container can be run via plain docker:
+
+```bash
+docker run -d \
+    --name breitband-desktop \
+    -e TZ=Europe/Berlin  `#optional (default)` \
+    -v $PWD/breitbandmessung/data:/config/xdg/config/Breitbandmessung \
+    -p 5800:5800 \
+    fabianbees/breitbandmessung:latest
+```
+
+Appdata for the Breitbandmessung Desktop App lives in the following directory (inside the container): ```/config/xdg/config/Breitbandmessung```. Therefore this directory should be mounted to a host directory.
+
+
+## Deploy via docker-compose
 
 Deploy container via docker-compose v3 schema:
 
@@ -24,15 +40,12 @@ cd breitbandmessung-docker
 docker compose up
 ```
 
-The container gets build automatically.
-
 
 ```yaml
 version: "3.8"
 services:
   breitband-desktop:
-    image: breitband:latest
-    build: .
+    image: fabianbees/breitbandmessung:latest
     container_name: breitband-desktop
     environment:
       - TZ=Europe/Berlin
@@ -45,47 +58,12 @@ services:
 
 
 
-
-
-
-## Deploy via docker run
-
-### Building the Container
-
-First you have to build the docker container localy, due to licencing I will not provide a prebuild image of the app.
-
-You can do this with the following commands:
-
-```bash
-git clone https://github.com/fabianbees/breitbandmessung-docker.git
-
-cd breitbandmessung-docker
-
-docker build -t breitband:latest .
-```
-
-### Run the Container
-
-Then the container can be run via docker:
-
-```bash
-docker run -d \
-    --name breitband-desktop \
-    -e TZ=Europe/Berlin  `#optional, default` \
-    -v $PWD/breitbandmessung/data:/config/xdg/config/Breitbandmessung \
-    -p 5800:5800 \
-    breitband:latest
-```
-
-Appdata for the Breitbandmessung Desktop App lives in the following directory (inside the container): ```/config/xdg/config/Breitbandmessung```. Therefore this directory should be mounted to a host directory.
-
-
 ## Deploy as Portainer Stack
 
 <details>
 <summary>see screenshot (click to expand)</summary>
 <br>
-<img src="images/portainer-stack.png">
+<img src="screenshots/portainer-stack.png">
 </details>
 
 
@@ -99,7 +77,7 @@ Appdata for the Breitbandmessung Desktop App lives in the following directory (i
 
 
 2. Go throgh setup process, until you reach the following page:
-![Screenshot1](images/screenshot1.png)
+![Screenshot1](screenshots/screenshot1.png)
 **DO NOT KLICK THE BUTTON "Messung durchführen" if you want to use the Speedtest automation script!**
 --> The automation script requires this exact screen to be shown for the automatic execution of a "Messkampagne".
 
@@ -107,7 +85,9 @@ Appdata for the Breitbandmessung Desktop App lives in the following directory (i
 ### Start automation via GUI (easy method)
 
 3. To start the script, use the website on the exposed port and put the string 'RUN' in the clipboard. To stop the script, remove the string. You may need to do this twice (error unknown). After a maximum of 15 seconds you should see the screen in action. 
-![Screenshot1](images/clipboard.png)
+![Screenshot1](screenshots/clipboard.png)
+
+```⚠️ If the clipboard method doesn't work for you, please try the following alternate method first, before opening an issue!```
 
 
 ### Start automation via terminal (safe, fallback method)
@@ -136,6 +116,22 @@ Support for this architecture currently cannot be provided, as the precompiled b
 
 You can try your luck and contact the developers of the official app (https://breitbandmessung.de/impressum ➡️ info@breitbandmessung.de) and ask them to publish a linux .deb package compiled for the aarch64 architecture.
 
+
+## Manually Building the Container (for development purposes)
+
+You can also build the docker container localy for development.
+
+```⚠️ Previously this was a mandatory step for normal deployment, now the app is installed on start of the container (not packaged in the image itself).```
+
+You can do this with the following commands:
+
+```bash
+git clone https://github.com/fabianbees/breitbandmessung-docker.git
+
+cd breitbandmessung-docker
+
+docker build -t breitband:latest .
+```
 
 
 ## Additional Notes

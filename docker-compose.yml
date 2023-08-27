@@ -1,8 +1,7 @@
 version: "3.8"
 services:
   breitband-desktop:
-    image: breitband:latest
-    build: .
+    image: fabianbees/breitbandmessung:latest
     container_name: breitband-desktop
     environment:
       - TZ=Europe/Berlin

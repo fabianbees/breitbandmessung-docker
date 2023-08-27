@@ -5,8 +5,7 @@
 version: "3.8"
 services:
   breitband-desktop:
-    image: breitband:latest
-    build: https://github.com/fabianbees/breitbandmessung-docker.git
+    image: fabianbees/breitbandmessung:latest
     container_name: breitband-desktop
     environment:
       - TZ=Europe/Berlin

@@ -4,10 +4,10 @@ variables:
   CI_BUILD_ARM64: ""
   CI_BUILD_ARMv7: ""
   # For using DOCKER_HUB as registry, set this Var to "true"
-  DOCKER_HUB: "false"
+  DOCKER_HUB: "true"
   # Override CI_PROJECT_PATH for using correct DOCKERHUB path
-  # CI_PROJECT_PATH: "fabianbees/breitbandmessung"
-  VERSION: "3.3.0"
+  CI_PROJECT_PATH: "fabianbees/breitbandmessung"
+  VERSION: "3.4.0"
 
 # Build Stages
 stages:
@@ -45,7 +45,7 @@ build:amd64:
   tags:
     - amd64
   script:
-    - docker build --pull --build-arg VERSION -t "$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-amd64" -t "$CI_REGISTRY_IMAGE:$VERSION-amd64" .
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-amd64" -t "$CI_REGISTRY_IMAGE:$VERSION-amd64" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-amd64"
     - docker push "$CI_REGISTRY_IMAGE:$VERSION-amd64"
 
@@ -59,7 +59,7 @@ build:arm64:
   tags:
     - arm64
   script:
-    - docker build --pull --build-arg VERSION -t "$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-arm64" -t "$CI_REGISTRY_IMAGE:$VERSION-arm64" .
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-arm64" -t "$CI_REGISTRY_IMAGE:$VERSION-arm64" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-arm64"
     - docker push "$CI_REGISTRY_IMAGE:$VERSION-arm64"
 
@@ -73,7 +73,7 @@ build:armv7:
   tags:
     - armv7
   script:
-    - docker build --pull --build-arg VERSION -t "$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-armv7" -t "$CI_REGISTRY_IMAGE:$VERSION-armv7" .
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-armv7" -t "$CI_REGISTRY_IMAGE:$VERSION-armv7" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_APPLICATION_TAG-armv7"
     - docker push "$CI_REGISTRY_IMAGE:$VERSION-armv7"
 

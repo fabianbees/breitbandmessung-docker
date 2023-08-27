@@ -1,6 +1,16 @@
 # Breitbandmessung.de Docker Container
 
 
+Setup the container in these five steps:
+
+1. Deploy the container through one of the deployment options.
+
+2. Configure your "Tarifangaben" inside the breibandmessung App.
+
+3. (optional) Start the automation for automatic measurements. (see ➡️ [Automated Speedtesting](#automated-speedtesting))
+
+
+
 
 ## Deploy via docker-compose (recommended)
 
@@ -34,9 +44,7 @@ services:
 ```
 
 
-## Deploy as Portainer Stack
 
-![Screenshot1](images/portainer-stack.png)
 
 
 
@@ -69,11 +77,23 @@ docker run -d \
     breitband:latest
 ```
 
-Appdata for the Breitbandmessung Desktop App lives in the following directory (inside the container): ```/config/xdg/config/Breitbandmessung```. Therefore this directory can be mounted to a host directory.
+Appdata for the Breitbandmessung Desktop App lives in the following directory (inside the container): ```/config/xdg/config/Breitbandmessung```. Therefore this directory should be mounted to a host directory.
+
+
+## Deploy as Portainer Stack
+
+<details>
+<summary>see screenshot (click to expand)</summary>
+<br>
+<img src="images/portainer-stack.png">
+</details>
+
 
 
 
 ## Automated Speedtesting
+
+### Setup breitbandmessung.de
 
 1. Open your browser with the following url: http://ip-of-docker-host:5800
 
@@ -83,15 +103,29 @@ Appdata for the Breitbandmessung Desktop App lives in the following directory (i
 **DO NOT KLICK THE BUTTON "Messung durchführen" if you want to use the Speedtest automation script!**
 --> The automation script requires this exact screen to be shown for the automatic execution of a "Messkampagne".
 
+
+### Start automation via GUI (easy method)
+
+3. To start the script, use the website on the exposed port and put the string 'RUN' in the clipboard. To stop the script, remove the string. You may need to do this twice (error unknown). After a maximum of 15 seconds you should see the screen in action. 
+![Screenshot1](images/clipboard.png)
+
+
+### Start automation via terminal (safe, fallback method)
+
 3. open a console (bash) to your docker container (```docker exec -it breitband-desktop bash```) and execute the following command inside this docker container:
 ```bash
 touch /RUN
 ```
 This creates a empty file called ```RUN``` in the root directory of the container, the automation script is looking for this file for knowing when the setup process has finished and speedtesting can start.
 
-4. Speedtesting get's started, the script tries to click through the buttons for running a speedtest every 5 minutes. If the countdown timer (waiting period) has not finished yet, the cilcks will do nothing.
 
-5. When all mesurements are done, the automation-script can be stopped by removing the ```/RUN``` file with the following command ```rm /RUN``` inside the docker container
+### During the process
+
+4. Speedtesting get's started, the script tries to click through the buttons for running a speedtest every 5 minutes. If the countdown timer (waiting period) has not finished yet, the clicks will do nothing.
+
+5. When all mesurements are done, the automation-script can be stopped by removing the ```/RUN``` file with the following command ```rm /RUN``` inside the docker container or change the content of the clipboard to something else than `RUN` via the GUI.
+
+
 
 
 ## Support for ARM-Architecture (Raspberry Pi)

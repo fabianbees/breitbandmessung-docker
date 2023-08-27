@@ -3,6 +3,9 @@ FROM jlesage/baseimage-gui:ubuntu-20.04
 
 ARG VERSION
 
+# Timezone can be overwritten via docker environment variable
+ENV TZ=Europe/Berlin
+
 ENV DEBIAN_FRONTEND noninteractive    # export DEBIAN_FRONTEND="noninteractive"
 ENV LANG=de_DE.UTF-8
 

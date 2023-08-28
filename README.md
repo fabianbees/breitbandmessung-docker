@@ -4,6 +4,7 @@
 Setup the container in these five steps:
 
 1. Deploy the container through one of the deployment options.
+(The initial start can take a multiple seconds, depending on your internet connction.)
 
 2. Configure your "Tarifangaben" inside the breibandmessung App.
 

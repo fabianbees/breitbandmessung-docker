@@ -1,5 +1,15 @@
 #!/usr/bin/with-contenv bash
 
+
+# check if /VERSION File exists, --> only installing on first container start, afterwards skip ...
+if [ -f "/VERSION" ]
+then
+    echo "App already installed, not installing again."
+    echo "Version is: $(sed -n "/^$APP_VERSION/p;q" /VERSION)"
+    exit 0
+fi
+
+
 echo "Installing Version $APP_VERSION (sha256:$APP_SHA256SUM)"
 
 

@@ -1,5 +1,8 @@
 #!/usr/bin/with-contenv bash
 
+set -e # Exit immediately if a command exits with a non-zero status.
+set -u # Treat unset variables as an error.
+
 
 # check if /VERSION File exists, --> only installing on first container start, afterwards skip ...
 if [ -f "/VERSION" ]
@@ -10,11 +13,8 @@ then
 fi
 
 
+# Otherwiese install breitbandmessung-dektop ...
 echo "Installing Version $APP_VERSION (sha256:$APP_SHA256SUM)"
-
-
-set -e # Exit immediately if a command exits with a non-zero status.
-set -u # Treat unset variables as an error.
 
 # Download latest breitbandmessung-app
 wget "https://download.breitbandmessung.de/bbm/Breitbandmessung-$APP_VERSION-linux.deb"

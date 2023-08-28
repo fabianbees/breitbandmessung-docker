@@ -11,6 +11,14 @@ Setup the container in these five steps:
 3. (optional) Start the automation for automatic measurements. (see ➡️ [Automated Speedtesting](#automated-speedtesting))
 
 
+## Tags
+
+| Registry | Image | Tag | Build |
+|:------------------:|:------------------:|:--------------:|:-----------------:|
+| [Docker-Hub](https://hub.docker.com/r/fabianbees/breitbandmessung/tags) | fabianbees/breitbandmessung | latest | ![pipeline status](https://gitlab.fabianbees.de/fabianbees/breitbandmessung-docker/badges/master/pipeline.svg) |
+
+
+
 
 
 ## Deploy via docker run

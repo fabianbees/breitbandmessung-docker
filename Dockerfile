@@ -1,15 +1,6 @@
 # Pull base image.
-FROM jlesage/baseimage-gui:ubuntu-20.04-v3
+FROM jlesage/baseimage-gui:ubuntu-20.04-v4.1
 
-# see: https://download.breitbandmessung.de/bbm/
-ENV APP_VERSION="3.4.0"
-ENV APP_SHA256SUM="97abb8d6811d5f0bb3feb6697761f6ed9cebb6a5d484a1f17ce51cd4ac7f5f09"
-
-# Timezone can be overwritten via docker environment variable
-ENV TZ=Europe/Berlin
-
-ENV DEBIAN_FRONTEND noninteractive    # export DEBIAN_FRONTEND="noninteractive"
-ENV LANG=de_DE.UTF-8
 
 # Install packages
 RUN apt update && apt upgrade -yy && \
@@ -22,13 +13,26 @@ RUN apt update && apt upgrade -yy && \
 RUN APP_ICON_URL=https://www.breitbandmessung.de/public/images/appicon-512.png && \
     install_app_icon.sh "$APP_ICON_URL"
 
-# Copy the start script.
-COPY startapp.sh /startapp.sh
-COPY run-speedtest.sh /etc/services.d/speedtest/run
-COPY 50-install-latest-breitbandmessung.sh /etc/cont-init.d/
+# Add files.
+COPY rootfs/ /
 
+# Set internal environment variables.
+# see: https://download.breitbandmessung.de/bbm/
+RUN \
+    set-cont-env APP_NAME "Breitbandmessung" && \
+    set-cont-env APP_VERSION "3.4.0" && \
+    set-cont-env APP_SHA256SUM "97abb8d6811d5f0bb3feb6697761f6ed9cebb6a5d484a1f17ce51cd4ac7f5f09" && \
+    set-cont-env DEBIAN_FRONTEND "noninteractive" && \
+    set-cont-env LANG "de_DE.UTF-8" && \
+    set-cont-env DISPLAY_WIDTH "1190" && \
+    set-cont-env DISPLAY_HEIGHT "730" && \
+    true
 
-# Set the name of the application.
-ENV APP_NAME="Breitbandmessung"
+# move to 4, 23 and lock window
+
+# Set public environment variables.
+# Timezone can be overwritten via docker environment variable
+ENV TZ=Europe/Berlin
+
 
 VOLUME /config/xdg/config/Breitbandmessung

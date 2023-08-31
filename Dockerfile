@@ -1,5 +1,5 @@
 # Pull base image.
-FROM jlesage/baseimage-gui:ubuntu-20.04-v4.1
+FROM jlesage/baseimage-gui:ubuntu-20.04-v4
 
 
 # Install packages
@@ -24,8 +24,8 @@ RUN \
     set-cont-env APP_SHA256SUM "97abb8d6811d5f0bb3feb6697761f6ed9cebb6a5d484a1f17ce51cd4ac7f5f09" && \
     set-cont-env DEBIAN_FRONTEND "noninteractive" && \
     set-cont-env LANG "de_DE.UTF-8" && \
-    set-cont-env DISPLAY_WIDTH "1190" && \
-    set-cont-env DISPLAY_HEIGHT "730" && \
+    #set-cont-env DISPLAY_WIDTH "1190" && \
+    #set-cont-env DISPLAY_HEIGHT "730" && \
     true
 
 # move to 4, 23 and lock window
@@ -33,6 +33,9 @@ RUN \
 # Set public environment variables.
 # Timezone can be overwritten via docker environment variable
 ENV TZ=Europe/Berlin
+ENV DISPLAY_WIDTH "1190"
+ENV DISPLAY_HEIGHT "730"
 
+# COPY rc.xml.template /opt/base/etc/openbox/rc.xml.template
 
 VOLUME /config/xdg/config/Breitbandmessung

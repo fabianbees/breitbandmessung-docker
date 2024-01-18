@@ -7,7 +7,7 @@ variables:
   DOCKER_HUB: "true"
   # Override CI_PROJECT_PATH for using correct DOCKERHUB path
   CI_PROJECT_PATH: "fabianbees/breitbandmessung"
-  VERSION: "3.5.0"
+  VERSION: "3.6.0"
 
 # Build Stages
 stages:

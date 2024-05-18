@@ -4,6 +4,10 @@ on:
   pull_request:
     branches: [ "master", "staging" ]
 
+env:
+  IMAGE_NAME: ${{ github.event.pull_request.base.repo.name }}
+  IMAGE_TAG: ${{ github.sha }}
+
 jobs:
 
   build:
@@ -13,4 +17,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag breitbandmessung-docker:$(date +%s)
+      run: |
+        docker \
+        build . \
+        --file Dockerfile \
+        --tag ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}

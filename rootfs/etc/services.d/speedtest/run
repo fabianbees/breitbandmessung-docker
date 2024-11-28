@@ -30,10 +30,10 @@ do
         current_minute=${current_minute#0}
 
         # Convert the start and end times to minutes for easier comparison
-        # 7:30 in minutes
-        start_time_minutes=$(( 7 * 60 + 30 ))
-        # 21:00 in minutes
-        end_time_minutes=$(( 21 * 60 ))
+        # 13:00 in minutes
+        start_time_minutes=$(( 13 * 60 ))
+        # 22:30 in minutes
+        end_time_minutes=$(( 22 * 60 + 30 ))
 
 
         # Convert the current time to minutes for comparison

@@ -4,7 +4,7 @@
 Setup the container in these five steps:
 
 1. Deploy the container through one of the deployment options.
-(The initial start can take a multiple seconds, depending on your internet connction.)
+(The initial start can take a multiple seconds, depending on your internet connection.)
 
 2. Configure your "Tarifangaben" inside the breibandmessung App.
 
@@ -148,7 +148,7 @@ docker build -t breitband:latest .
 
 ## Additional Notes
 
-- The automation-script is configured, to run speedtests only after 7:30 AM, becaus it is assumed, that the network load between 0 o'clock and 7:30 AM is lower than it is under normal use during the day.
+- The automation-script is configured, to run speedtests only between 13:00 and 22:30 o'clock, because it is assumed, that the network load between 0 o'clock and 13:00 AM is lower than it is under normal use during the day.
 (This behaviour could be alterd, by changing the values in the **if statement in line 18** of the file ```run-speedtest.sh``` before building the docker image).
 
 - If you want to have more granular control for when speedtest should be run, the docker container could be stopped when no speedtest should be run, and restarted if testing should continue.

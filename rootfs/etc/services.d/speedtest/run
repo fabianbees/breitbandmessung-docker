@@ -44,7 +44,7 @@ do
         # --> only start speedtesting during daytime, as this is the most relevant metric
         if (( current_time_minutes >= start_time_minutes && current_time_minutes <= end_time_minutes ))
         then
-            echo "The current time is between 07:30 and 21:00."
+            echo "The current time is between 13:00 and 22:30."
             echo "Trying to start speedtest..."
             
             # messung durchfuehren
@@ -78,7 +78,7 @@ do
 
         
         else
-            echo "NOT STARTING. The current time is outside the specified range of 07:30 and 21:00."
+            echo "NOT STARTING. The current time is outside the specified range of 13:00 and 22:30."
         fi
 
 

@@ -5,6 +5,8 @@ services:
     container_name: breitband-desktop
     environment:
       - TZ=Europe/Berlin
+      - TIME_START
+      - TIME_END
     volumes:
       - $PWD/breitbandmessung/data:/config/xdg/config/Breitbandmessung
     ports:

@@ -9,6 +9,8 @@ services:
     container_name: breitband-desktop
     environment:
       - TZ=Europe/Berlin
+      - TIME_START
+      - TIME_END
     volumes:
       - ${APPDATA}:/config/xdg/config/Breitbandmessung
     ports:

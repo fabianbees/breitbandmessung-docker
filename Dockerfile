@@ -33,6 +33,8 @@ ENV TZ=Europe/Berlin
 # 1180x720 is absolute minimum
 ENV DISPLAY_WIDTH "1280"
 ENV DISPLAY_HEIGHT "768"
+ENV TIME_START "13:00"
+ENV TIME_END "23:00"
 
 
 VOLUME /config/xdg/config/Breitbandmessung

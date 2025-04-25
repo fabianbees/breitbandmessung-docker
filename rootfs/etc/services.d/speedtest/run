@@ -78,8 +78,8 @@ do
 
 
             # wait 6 minutes
-            sleep 360
             echo "waiting 6 minutes..."
+            sleep 360
 
 
         else

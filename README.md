@@ -33,7 +33,7 @@ docker run -d \
     --name breitband-desktop \
     -e TZ=Europe/Berlin  `#optional (default)` \
     -e TIME_START="13:00" `#optional (default)` \
-    -e TIME_END="23:00" `#optional (default)` \
+    -e TIME_END="22:30" `#optional (default)` \
     -v $PWD/breitbandmessung/data:/config/xdg/config/Breitbandmessung \
     -p 5800:5800 \
     fabianbees/breitbandmessung:latest
@@ -64,7 +64,7 @@ services:
     environment:
       - TZ=Europe/Berlin
       - TIME_START="13:00"
-      - TIME_END="23:00"
+      - TIME_END="22:30"
     volumes:
       - $PWD/breitbandmessung/data:/config/xdg/config/Breitbandmessung
     ports:
@@ -153,7 +153,7 @@ docker build -t breitband:latest .
 ## Additional Notes
 
 - By default, the automation-script is configured to run speedtests only between 13:00 and 22:30 o'clock, because it is assumed, that the network load between 0 o'clock and 13:00 AM is lower than it is under normal use during the day.
-  To customise the time window, change the environment variables `TIME_START` and `TIME_END`, either by changing it directly in the `docker-compose.yml`, or using an `.env` file (see `.env.example`).
+  To customise the time window, change the environment variables `TIME_START` and `TIME_END`.
 
 - If you want to have more granular control for when speedtest should be run, the docker container could be stopped when no speedtest should be run, and restarted if testing should continue.
 

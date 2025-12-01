@@ -20,8 +20,8 @@ COPY rootfs/ /
 # see: https://download.breitbandmessung.de/bbm/
 RUN \
     set-cont-env APP_NAME "Breitbandmessung" && \
-    set-cont-env APP_VERSION "3.10.0" && \
-    set-cont-env APP_SHA256SUM "2e1d5b555ee1a755ef428793a3190eb53e5376aedac940f347a0ff5600d22164" && \
+    set-cont-env APP_VERSION "3.11.0" && \
+    set-cont-env APP_SHA256SUM "90db91fb370a11d67da741c46a39854374c8533d73d80a34f7c40d08aeb1e658" && \
     set-cont-env DEBIAN_FRONTEND "noninteractive" && \
     set-cont-env LANG "de_DE.UTF-8" &&  \
     true

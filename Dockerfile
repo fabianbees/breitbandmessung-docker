@@ -31,8 +31,8 @@ RUN \
 # Timezone can be overwritten via docker environment variable
 ENV TZ=Europe/Berlin
 # 1180x720 is absolute minimum
-ENV DISPLAY_WIDTH "1280"
-ENV DISPLAY_HEIGHT "768"
+ENV DISPLAY_WIDTH="1280"
+ENV DISPLAY_HEIGHT="768"
 
 
 VOLUME /config/xdg/config/Breitbandmessung

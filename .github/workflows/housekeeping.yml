@@ -1,0 +1,25 @@
+name: Remove untagged images from registry
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * 0"
+
+jobs:
+  remove_untagged_images:
+    runs-on: ubuntu-latest
+    if: ${{ (github.event_name == 'schedule' && github.repository_owner == 'fabianbees') || github.event_name != 'schedule'  }}
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Delete all containers from package without tags
+        uses: Chizkiyahu/delete-untagged-ghcr-action@main
+        with:
+          token: ${{ github.token }}
+          repository_owner: ${{ github.repository_owner }}
+          repository: ${{ github.repository }}
+          package_name: ${{ github.event.repository.name }}
+          untagged_only: true
+          owner_type: user # or org
+          except_untagged_multiplatform: true 

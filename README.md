@@ -32,6 +32,8 @@ The container can be run via plain docker:
 docker run -d \
     --name breitband-desktop \
     -e TZ=Europe/Berlin  `#optional (default)` \
+    -e TIME_START="13:00" `#optional (default)` \
+    -e TIME_END="22:30" `#optional (default)` \
     -v $PWD/breitbandmessung/data:/config/xdg/config/Breitbandmessung \
     -p 5800:5800 \
     fabianbees/breitbandmessung:latest
@@ -61,6 +63,8 @@ services:
     container_name: breitband-desktop
     environment:
       - TZ=Europe/Berlin
+      - TIME_START="13:00"
+      - TIME_END="22:30"
     volumes:
       - $PWD/breitbandmessung/data:/config/xdg/config/Breitbandmessung
     ports:
@@ -96,7 +100,7 @@ services:
 
 ### Start automation via GUI (easy method)
 
-3. To start the script, use the website on the exposed port and put the string 'RUN' in the clipboard. To stop the script, remove the string. You may need to do this twice (error unknown). After a maximum of 15 seconds you should see the screen in action. 
+3. To start the script, use the website on the exposed port and put the string 'RUN' in the clipboard. To stop the script, remove the string. You may need to do this twice (error unknown). After a maximum of 15 seconds you should see the screen in action.
 ![Screenshot1](screenshots/clipboard.png)
 
 ```⚠️ If the clipboard method doesn't work for you, please try the following alternate method first, before opening an issue!```
@@ -148,8 +152,8 @@ docker build -t breitband:latest .
 
 ## Additional Notes
 
-- The automation-script is configured, to run speedtests only between 13:00 and 22:30 o'clock, because it is assumed, that the network load between 0 o'clock and 13:00 AM is lower than it is under normal use during the day.
-(This behaviour could be alterd, by changing the values in the **if statement in line 18** of the file ```run-speedtest.sh``` before building the docker image).
+- By default, the automation-script is configured to run speedtests only between 13:00 and 22:30 o'clock, because it is assumed, that the network load between 0 o'clock and 13:00 AM is lower than it is under normal use during the day.
+  To customise the time window, change the environment variables `TIME_START` and `TIME_END`.
 
 - If you want to have more granular control for when speedtest should be run, the docker container could be stopped when no speedtest should be run, and restarted if testing should continue.
 

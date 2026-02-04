@@ -56,15 +56,14 @@ docker compose up
 
 
 ```yaml
-version: "3.8"
 services:
   breitband-desktop:
     image: fabianbees/breitbandmessung:latest
     container_name: breitband-desktop
     environment:
-      - TZ=Europe/Berlin
-      - TIME_START="13:00"
-      - TIME_END="22:30"
+      - TZ: Europe/Berlin
+      - TIME_START: "13:00"
+      - TIME_END: "22:30"
     volumes:
       - $PWD/breitbandmessung/data:/config/xdg/config/Breitbandmessung
     ports:

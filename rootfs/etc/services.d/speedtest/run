@@ -25,7 +25,7 @@ do
     clipboard="$(DISPLAY=:0 xclip -o)"
 
     # check if /RUN File exists, or if clipboard is set to 'RUN'
-    if [ "$clipboard" == "RUN" ] || [ -f "/RUN" ]
+    if [ "$clipboard" == "RUN" ] || [ -e "/RUN" ]
     then
         echo "Run set!"
 

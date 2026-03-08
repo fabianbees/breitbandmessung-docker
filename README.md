@@ -113,7 +113,19 @@ touch /RUN
 ```
 This creates a empty file called ```RUN``` in the root directory of the container, the automation script is looking for this file for knowing when the setup process has finished and speedtesting can start.
 
-
+### Start automation by default (for reliable container restarts)
+3. Add a volume mount to /RUN like this:
+```bash
+docker run -d \
+    --name breitband-desktop \
+    -e TZ=Europe/Berlin  `#optional (default)` \
+    -e TIME_START="13:00" `#optional (default)` \
+    -e TIME_END="22:30" `#optional (default)` \
+    -v $PWD/breitbandmessung/data:/config/xdg/config/Breitbandmessung \
+    -v /dev/null:/RUN \
+    -p 5800:5800 \
+    fabianbees/breitbandmessung:latest
+```
 ### During the process
 
 4. Speedtesting get's started, the script tries to click through the buttons for running a speedtest every 5 minutes. If the countdown timer (waiting period) has not finished yet, the clicks will do nothing.
@@ -157,3 +169,33 @@ docker build -t breitband:latest .
 - If you want to have more granular control for when speedtest should be run, the docker container could be stopped when no speedtest should be run, and restarted if testing should continue.
 
 - A "Messkampagne" which is in progrss, can only be stopped, by purging the appdata of the container, or by altering your "Tarifangaben".
+
+## Distribution specific guide, community supported
+### NixOS
+```
+  virtualisation = {
+    podman = {
+      enable = true;
+      dockerCompat = true;
+      defaultNetwork.settings.dns_enabled = true;
+      networkSocket.openFirewall = true;
+    };
+    oci-containers = {
+      backend = "podman";
+      containers = {
+        "breitbandmessung" = {
+          image = "fabianbees/breitbandmessung";
+          autoRemoveOnStop = false;
+          autoStart = true;
+          pull = "newer";
+          environment = {
+            TZ="Europe/Berlin";
+            TIME_START="00:00";
+            TIME_END="08:00";
+          };
+          volumes = [ "/home/$USER/breitbandmessung/data:/config/xdg/config/Breitbandmessung" "/dev/null:/RUN"];
+          ports = [ "5800:5800" ];
+        };
+    };
+};
+```

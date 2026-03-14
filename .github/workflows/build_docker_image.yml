@@ -11,7 +11,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}${{ github.event.pull_request.number && '-' }}${{ github.event.pull_request.number || '' }}
-  cancel-in-progress: ${{ (github.event_name == 'pull_request') && true || false }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' && true || false }}
 
 env:
   REGISTRY: ghcr.io

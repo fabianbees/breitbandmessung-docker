@@ -9,7 +9,7 @@ time_to_minutes() {
         echo "Invalid time format. Use HH:MM or H:MM" >&2
         return 1
     fi
-    echo $(( $HOUR*60 + $MINUTE ))
+    echo $(( ${HOUR#0}*60 + $MINUTE ))
 }
 
 start_time_minutes=$(time_to_minutes $TIME_START)
@@ -25,7 +25,7 @@ do
     clipboard="$(DISPLAY=:0 xclip -o)"
 
     # check if /RUN File exists, or if clipboard is set to 'RUN'
-    if [ "$clipboard" == "RUN" ] || [ -f "/RUN" ]
+    if [ "$clipboard" == "RUN" ] || [ -e "/RUN" ]
     then
         echo "Run set!"
 

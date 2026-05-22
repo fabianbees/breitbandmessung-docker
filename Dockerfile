@@ -3,10 +3,9 @@ FROM jlesage/baseimage-gui:ubuntu-24.04-v4
 
 
 # Install packages
-RUN apt update && apt upgrade -yy && \
-  apt install -y apt-utils nano libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 libgbm-dev libxss1 libasound2t64 wget xterm libnss3 locales xdotool xclip && \
-  locale-gen de_DE.UTF-8 && \
-  rm -rf /var/cache/apt /var/lib/apt/lists
+RUN upg-pkg && \
+    add-pkg apt-utils nano libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 libgbm-dev libxss1 libasound2t64 wget xterm libnss3 locales xdotool xclip ca-certificates libgl1 lsb-release && \
+    locale-gen de_DE.UTF-8
 
 # Generate and install favicons.
 # alternative logo: https://breitbandmessung.de/images/breitbandmessung-logo.png

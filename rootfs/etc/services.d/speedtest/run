@@ -22,7 +22,7 @@ do
     sleep 15
 
     # get value of clipboard from novnc
-    clipboard="$(DISPLAY=:0 xclip -o)"
+    clipboard="$(DISPLAY=:0 xclip -o 2> >(grep -v '^Error: target .* not available$' >&2))"
 
     # check if /RUN File exists, or if clipboard is set to 'RUN'
     if [ "$clipboard" == "RUN" ] || [ -e "/RUN" ]

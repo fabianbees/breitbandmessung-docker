@@ -1,0 +1,9 @@
+# The accessibility bus only publishes an application's widget tree once the
+# desktop declares that accessibility is in use. at-spi-bus-launcher reports
+# that as org.a11y.Status.IsEnabled, which it reads from this setting, and
+# Electron checks it on startup before bringing up its bridge.
+#
+# There is no desktop session in the container to switch this on, so it is set
+# here as a vendor default.
+[org.gnome.desktop.interface]
+toolkit-accessibility=true

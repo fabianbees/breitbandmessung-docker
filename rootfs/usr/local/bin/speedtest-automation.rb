@@ -51,6 +51,37 @@ def within_window?(now, window)
   window.cover?(minutes)
 end
 
+# Runs one attempt and returns what happened, as a line for the log.
+#
+# Everything that touches the accessibility bus happens in a short-lived child
+# process. A widget the app has just discarded makes libatspi read from a null
+# pointer, which is a segfault rather than an exception, so it cannot be
+# rescued - only kept away from the service. The parent never speaks to the bus
+# itself, so a crash costs one attempt instead of the whole automation.
+def attempt_measurement
+  reader, writer = IO.pipe
+
+  pid = fork do
+    reader.close
+    app = Breitbandmessung::Accessibility.application(timeout: 10)
+    writer.write(app ? Breitbandmessung::Measurement.start(app).to_s
+                     : "the app is not on the accessibility bus")
+    writer.close
+    exit!(0)
+  rescue StandardError => e
+    writer.write("measurement failed: #{e.class}: #{e.message}")
+    writer.close
+    exit!(0)
+  end
+
+  writer.close
+  detail = reader.read
+  reader.close
+  Process.waitpid(pid)
+
+  detail.empty? ? "the app's widget tree changed mid-read, retrying" : detail
+end
+
 def main
   $stdout.sync = true
 
@@ -75,24 +106,10 @@ def main
       next
     end
 
-    # Looked up again every round rather than kept: the app rebuilds its
-    # widget tree as views come and go, and reading from a node it has already
-    # thrown away crashes libatspi. The desktop holds a single application, so
-    # this costs next to nothing.
-    app = Breitbandmessung::Accessibility.application(timeout: 10)
-    unless app
-      log "the app is not on the accessibility bus, retrying."
-      next
-    end
-
     # No pause after a measurement: the app greys the button out for as long as
     # it wants to wait, and hides it entirely while a measurement runs, so it
     # already states the timing far more precisely than a fixed interval could.
-    begin
-      log Breitbandmessung::Measurement.start(app).to_s
-    rescue StandardError => e
-      log "measurement failed: #{e.class}: #{e.message}"
-    end
+    log attempt_measurement
   end
 end
 

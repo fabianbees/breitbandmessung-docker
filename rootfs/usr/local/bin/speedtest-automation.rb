@@ -76,11 +76,11 @@ def main
       next
     end
 
-    # Looked up once and reused; the reference stays valid until the app
-    # restarts, which is when the next lookup is needed anyway. The app is
-    # already running by the time the automation is armed, so a short timeout
-    # is enough and keeps the loop responsive.
-    app ||= Breitbandmessung::Accessibility.application(timeout: 10)
+    # Looked up again every round rather than kept: the app rebuilds its
+    # widget tree as views come and go, and reading from a node it has already
+    # thrown away crashes libatspi. The desktop holds a single application, so
+    # this costs next to nothing.
+    app = Breitbandmessung::Accessibility.application(timeout: 10)
     unless app
       log "the app is not on the accessibility bus, retrying."
       next

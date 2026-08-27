@@ -24,9 +24,12 @@ module Breitbandmessung
     def start(app)
       button = app.find(name: START_LABEL, role: :button, showing: true)
       unless button
-        return Result.new(false, "no #{START_LABEL.inspect} button on screen, " \
+        return Result.new(false, "no '#{START_LABEL}' button on screen, " \
                                  "leave the app on the Messkampagne screen")
       end
+
+      # While the app counts down the waiting period between two measurements the button is greyed out.
+      return Result.new(false, "waiting period, '#{START_LABEL}' is greyed out") unless button.enabled?
 
       button.click
 

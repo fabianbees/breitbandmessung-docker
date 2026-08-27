@@ -65,6 +65,13 @@ module Breitbandmessung
       state?(Atspi::StateType::CHECKED)
     end
 
+    # A button the app has greyed out keeps SHOWING but loses SENSITIVE. That
+    # is how a waiting period between two measurements looks from here, and
+    # pressing such a button does nothing at all.
+    def enabled?
+      state?(Atspi::StateType::SENSITIVE)
+    end
+
     def matches?(name: nil, role: nil, showing: false)
       return false if name && self.name != name
       return false if role && role_name != ROLE_NAMES.fetch(role)

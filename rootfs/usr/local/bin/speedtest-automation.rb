@@ -89,7 +89,7 @@ def main
   end_time = ENV.fetch("TIME_END", "23:00")
   window = parse_time(start_time, "TIME_START")..parse_time(end_time, "TIME_END")
   # Seconds between two checks of the trigger:
-  poll_interval = Integer(ENV.fetch("POLL_INTERVAL", "15")) rescue 15
+  poll_interval = Integer(ENV.fetch("POLL_INTERVAL", "60")) rescue 60
   log "automation service started, measurement window is #{start_time} - #{end_time}"
 
   loop do

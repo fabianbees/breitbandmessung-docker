@@ -34,6 +34,8 @@ RUN \
     set-cont-env APP_SHA256SUM "b948331a4e8df0fcbdd6fbace588770e62b4c61e7e279c6a0f79ef581de080f1" && \
     set-cont-env DEBIAN_FRONTEND "noninteractive" && \
     set-cont-env LANG "de_DE.UTF-8" &&  \
+    # Ignore upstream deprecation warning in logs
+    set-cont-env NODE_NO_WARNINGS "1" && \
     true
 
 
@@ -45,7 +47,7 @@ ENV DISPLAY_WIDTH="1280"
 ENV DISPLAY_HEIGHT="768"
 ENV TIME_START="13:00"
 ENV TIME_END="23:00"
-ENV POLL_INTERVAL=15
+ENV POLL_INTERVAL=60
 ENV XVNC_SERVER_CUSTOM_PARAMS="-AcceptSetDesktopSize=0"
 
 

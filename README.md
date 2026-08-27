@@ -99,7 +99,7 @@ services:
 
 ### Start automation via GUI (easy method)
 
-3. To start the script, use the website on the exposed port and put the string 'RUN' in the clipboard. To stop the script, remove the string. You may need to do this twice (error unknown). After a maximum of 15 seconds you should see the screen in action.
+3. To start the script, use the website on the exposed port and put the string 'RUN' in the clipboard. To stop the script, remove the string. You may need to do this twice (error unknown). After a maximum of 60 seconds you should see the screen in action.
 ![Screenshot1](screenshots/clipboard.png)
 
 ```⚠️ If the clipboard method doesn't work for you, please try the following alternate method first, before opening an issue!```

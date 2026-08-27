@@ -13,14 +13,15 @@ $LOAD_PATH.unshift("/usr/local/lib")
 
 require "breitbandmessung/measurement"
 
-# Seconds to wait after a measurement was started. A measurement itself takes
-# about a minute, the app enforces a waiting period before the next one.
-MEASUREMENT_PAUSE = 360
 # The trigger file, as an alternative to the clipboard method.
 TRIGGER_FILE = "/RUN"
 TRIGGER_VALUE = "RUN"
 
+# logs without repeats
 def log(message)
+  return if message == $last_logged
+
+  $last_logged = message
   puts "[#{Time.now.strftime('%Y-%m-%d %H:%M:%S')}] #{message}"
 end
 
@@ -60,8 +61,6 @@ def main
   poll_interval = Integer(ENV.fetch("POLL_INTERVAL", "15")) rescue 15
   log "automation service started, measurement window is #{start_time} - #{end_time}"
 
-  app = nil
-
   loop do
     sleep poll_interval
 
@@ -86,20 +85,13 @@ def main
       next
     end
 
-    log "starting a measurement"
+    # No pause after a measurement: the app greys the button out for as long as
+    # it wants to wait, and hides it entirely while a measurement runs, so it
+    # already states the timing far more precisely than a fixed interval could.
     begin
-      result = Breitbandmessung::Measurement.start(app)
+      log Breitbandmessung::Measurement.start(app).to_s
     rescue StandardError => e
       log "measurement failed: #{e.class}: #{e.message}"
-      app = nil
-      next
-    end
-
-    if result.started?
-      log "#{result}, waiting #{MEASUREMENT_PAUSE / 60} minutes"
-      sleep MEASUREMENT_PAUSE
-    else
-      log "could not start a measurement: #{result}"
     end
   end
 end

@@ -3,6 +3,19 @@
 set -e # Exit immediately if a command exits with a non-zero status.
 set -u # Treat unset variables as an error.
 
+# Check for updates to the Breitbandmessung app and its Electron runtime.
+if [ "${CHECK_FOR_UPDATES:-false}" = true ]; then
+    AUTO_UPDATE_OUTPUT="$(CSV_OUT=true detect-electron-version.sh 2>/dev/null | tail -n 1 || true)"
+    if [ -z "${AUTO_UPDATE_OUTPUT:-}" ]; then
+        echo "Could not detect latest Breitbandmessung version. Please check your network connection."
+        exit 1
+    else
+        IFS=';' read -r ELECTRON_VERSION APP_VERSION APP_SHA256SUM <<< "$AUTO_UPDATE_OUTPUT"
+        echo "Detected latest Breitbandmessung version: $APP_VERSION (sha256:$APP_SHA256SUM)"
+        set-cont-env APP_VERSION "$APP_VERSION"
+        set-cont-env APP_SHA256SUM "$APP_SHA256SUM"
+    fi
+fi
 
 # check if /VERSION File exists, --> only installing on first container start, afterwards skip ...
 if [ -f "/VERSION" ]

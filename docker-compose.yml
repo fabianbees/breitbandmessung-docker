@@ -7,6 +7,7 @@ services:
       TIME_START: "13:00"
       TIME_END: "22:30"
       POLL_INTERVAL: 60
+      CHECK_FOR_UPDATES: "true"
     volumes:
       - $PWD/breitbandmessung/data:/config/xdg/config/Breitbandmessung
     ports:

@@ -19,6 +19,7 @@ export LC_ALL=C
 
 BASE_URL="https://download.breitbandmessung.de/bbm"
 WORK_DIR="$(mktemp -d)"
+CSV_OUT="${CSV_OUT:-false}"  # set to true to get CSV output instead of human-readable text
 trap 'rm -rf "$WORK_DIR"' EXIT
 
 # Which release to look at: the one asked for, or whatever is current.
@@ -61,9 +62,14 @@ if ! wget -q --spider "$ELECTRON_URL"; then
     exit 1
 fi
 
+APP_SHA256SUM="$(sha256sum "$DEB" | cut -d' ' -f1)"
+if [ "$CSV_OUT" = true ]; then
+    echo "$ELECTRON_VERSION;$APP_VERSION;$APP_SHA256SUM"
+    exit 0
+fi
 echo
 echo "the app is built against Electron $ELECTRON_VERSION (arm64 build exists)"
 echo "pin these in the Dockerfile:"
 echo "  ARG ELECTRON_VERSION=$ELECTRON_VERSION"
 echo "  set-cont-env APP_VERSION \"$APP_VERSION\""
-echo "  set-cont-env APP_SHA256SUM \"$(sha256sum "$DEB" | cut -d' ' -f1)\""
+echo "  set-cont-env APP_SHA256SUM \"$APP_SHA256SUM\""

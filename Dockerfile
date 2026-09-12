@@ -43,6 +43,7 @@ RUN APP_ICON_URL=https://www.breitbandmessung.de/public/images/appicon-512.png &
 
 # Add files.
 COPY rootfs/ /
+COPY --chmod=+x scripts/detect-electron-version.sh /usr/local/bin/detect-electron-version.sh
 
 # The base image switches accessibility off for the apps it hosts. The
 # automation service reads the app's widget tree from the accessibility bus, so

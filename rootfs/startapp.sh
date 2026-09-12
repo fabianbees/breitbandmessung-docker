@@ -2,7 +2,7 @@
 
 # --force-renderer-accessibility makes Electron publish its widget tree on the
 # accessibility bus, which is how the automation service drives the app.
-FLAGS="--no-sandbox --force-renderer-accessibility"
+FLAGS="--no-sandbox --force-renderer-accessibility --disable-dev-shm-usage --ignore-gpu-blocklist"
 
 # On x86_64 the package installs its own Electron runtime and a launcher.
 if command -v breitbandmessung >/dev/null 2>&1

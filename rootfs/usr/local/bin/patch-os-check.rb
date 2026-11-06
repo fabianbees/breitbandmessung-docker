@@ -27,7 +27,7 @@
 # replaces, keeping every asar offset valid without unpacking and repacking
 # the 250 MB archive on the target device.
 
-ASAR = ARGV[0] || "/opt/Breitbandmessung/resources/app.asar"
+ASAR = ARGV[0] || "/opt/Festnetz-Check/resources/app.asar"
 
 # The action variable is minified, so the pattern matches whatever it is called
 # in this release rather than hardcoding the current name.

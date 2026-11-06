@@ -32,10 +32,10 @@ if [ -z "$APP_VERSION" ]; then
     RELEASE_DATE="$(echo "$MANIFEST" | sed -n "s/^releaseDate: *'\(.*\)'/\1/p")"
     echo "latest release is $APP_VERSION (${RELEASE_DATE:-date unknown})"
 fi
-DEB="$WORK_DIR/Breitbandmessung-${APP_VERSION}-linux.deb"
+DEB="$WORK_DIR/Festnetz-Check-${APP_VERSION}-linux.deb"
 
-echo "downloading Breitbandmessung-${APP_VERSION}-linux.deb ..."
-wget -q -O "$DEB" "$BASE_URL/Breitbandmessung-${APP_VERSION}-linux.deb"
+echo "downloading Festnetz-Check-${APP_VERSION}-linux.deb ..."
+wget -q -O "$DEB" "$BASE_URL/Festnetz-Check-${APP_VERSION}-linux.deb"
 
 if [ -n "${EXPECTED_SHA512:-}" ]; then
     EXPECTED_HEX="$(echo "$EXPECTED_SHA512" | base64 -d | od -An -tx1 | tr -d ' \n')"
@@ -45,7 +45,7 @@ fi
 # Read the version out of the bundled runtime. The package is streamed rather
 # than unpacked: the version string sits early in the binary.
 ELECTRON_VERSION="$(dpkg-deb --fsys-tarfile "$DEB" 2>/dev/null \
-    | tar -xO ./opt/Breitbandmessung/breitbandmessung 2>/dev/null \
+    | tar -xO ./opt/Festnetz-Check/breitbandmessung 2>/dev/null \
     | grep -aom1 'Electron/[0-9.]*' | head -1 | cut -d/ -f2 || true)"
 
 if [ -z "$ELECTRON_VERSION" ]; then
@@ -66,4 +66,4 @@ echo "the app is built against Electron $ELECTRON_VERSION (arm64 build exists)"
 echo "pin these in the Dockerfile:"
 echo "  ARG ELECTRON_VERSION=$ELECTRON_VERSION"
 echo "  set-cont-env APP_VERSION \"$APP_VERSION\""
-echo "  set-cont-env APP_SHA256SUM \"$(sha256sum "$DEB" | cut -d' ' -f1)\""
+echo "  set-cont-env APP_SHA512SUM \"$(sha512sum "$DEB" | cut -d' ' -f1)\""

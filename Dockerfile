@@ -52,11 +52,11 @@ RUN rm -f /etc/cont-env.d/NO_AT_BRIDGE /etc/cont-env.d/GTK_A11Y && \
 
 # Set internal environment variables.
 # see: https://download.breitbandmessung.de/bbm/
-# APP_VERSION and APP_SHA256SUM are printed by ./scripts/detect-electron-version.sh
+# APP_VERSION and APP_SHA512SUM are printed by ./scripts/detect-electron-version.sh
 RUN \
     set-cont-env APP_NAME "Breitbandmessung" && \
-    set-cont-env APP_VERSION "3.12.1" && \
-    set-cont-env APP_SHA256SUM "b948331a4e8df0fcbdd6fbace588770e62b4c61e7e279c6a0f79ef581de080f1" && \
+    set-cont-env APP_VERSION "3.13.0" && \
+    set-cont-env APP_SHA512SUM "x2sLL1EcQdYxwULBcrwHGmCwqek71Fs1aMDiy6bemEhJE2kYy1aIc8+SiqUv8JIxAS7bf1AKxQpT9mNlFoyLMw==" && \
     set-cont-env DEBIAN_FRONTEND "noninteractive" && \
     set-cont-env LANG "de_DE.UTF-8" &&  \
     # Ignore upstream deprecation warning in logs

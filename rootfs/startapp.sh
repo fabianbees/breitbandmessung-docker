@@ -12,9 +12,9 @@ fi
 
 # Everywhere else the same application code runs on the Electron runtime that
 # was installed into the image instead.
-if [ -x /opt/electron/breitbandmessung ] && [ -f /opt/Breitbandmessung/resources/app.asar ]
+if [ -x /opt/electron/breitbandmessung ] && [ -f /opt/Festnetz-Check/resources/app.asar ]
 then
-    exec /opt/electron/breitbandmessung /opt/Breitbandmessung/resources/app.asar $FLAGS
+    exec /opt/electron/breitbandmessung /opt/Festnetz-Check/resources/app.asar $FLAGS
 fi
 
 echo "Breitbandmessung is not installed correctly: no launcher for $(uname -m)." >&2
